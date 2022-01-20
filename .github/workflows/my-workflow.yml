@@ -1,10 +1,17 @@
-name: Log latest release
-on:
-  push:
-    branches:
-      - master
+name: "JS Actions"
+
+on: [push]
 
 jobs:
+  action:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: "hello-action"
+        uses: ./.github/actions/hello-world
+        with:
+          third-greeting: "Learning Lab User"
   logLatestRelease:
     runs-on: ubuntu-latest
     steps:

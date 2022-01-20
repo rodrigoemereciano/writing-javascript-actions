@@ -1,14 +1,19 @@
-name: "JS Actions"
-
-on: [push]
+name: Log latest release
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-  action:
-    runs-on: "ubuntu-latest"
+  logLatestRelease:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-
-      - name: "hello-action"
-        uses: ./.github/actions/hello-world
+      - uses: octokit/request-action@v2.x
+        id: get_latest_release
         with:
-          third-greeting: "Learning Lab User"
+          route: GET /repos/{owner}/{repo}/releases/latest
+          owner: octokit
+          repo: request-action
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo latest release: ${{ steps.get_latest_release.outputs.data }}"
